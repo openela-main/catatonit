@@ -1,7 +1,7 @@
 Name: catatonit
 Epoch: 3
 Version: 0.1.7
-Release: 9%{?dist}
+Release: 10%{?dist}
 Summary: A signal-forwarding process manager for containers
 License: GPLv3+
 URL: https://github.com/openSUSE/catatonit
@@ -52,9 +52,13 @@ install -p %{name} %{buildroot}%{_libexecdir}/%{name}
 %{_libexecdir}/%{name}/%{name}
 
 %changelog
+* Wed Jun 21 2023 Jindrich Novy <jnovy@redhat.com> - 3:0.1.7-10
+- bump release to preserve upgrade path from 9.2
+- Resolves: #2209677
+
 * Mon May 29 2023 Jindrich Novy <jnovy@redhat.com> - 3:0.1.7-9
-- rebuild for 9.2.z update
-- Resolves: #2210342
+- rebuild for 9.3
+- Resolves: #2209677
 
 * Wed Jan 11 2023 Jindrich Novy <jnovy@redhat.com> - 3:0.1.7-8
 - remove any relation to podman-catatonit
