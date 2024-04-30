@@ -1,7 +1,7 @@
 Name: catatonit
 Epoch: 3
-Version: 0.1.7
-Release: 10%{?dist}
+Version: 0.2.0
+Release: 1%{?dist}
 Summary: A signal-forwarding process manager for containers
 License: GPLv3+
 URL: https://github.com/openSUSE/catatonit
@@ -52,6 +52,10 @@ install -p %{name} %{buildroot}%{_libexecdir}/%{name}
 %{_libexecdir}/%{name}/%{name}
 
 %changelog
+* Wed Oct 04 2023 Jindrich Novy <jnovy@redhat.com> - 3:0.2.0-1
+- update to https://github.com/openSUSE/catatonit/releases/tag/v0.2.0
+- Related: Jira:RHEL-2112
+
 * Wed Jun 21 2023 Jindrich Novy <jnovy@redhat.com> - 3:0.1.7-10
 - bump release to preserve upgrade path from 9.2
 - Resolves: #2209677
