@@ -1,6 +1,6 @@
 Name: catatonit
 Epoch: 3
-Version: 0.2.0
+Version: 0.2.1
 Release: 1%{?dist}
 Summary: A signal-forwarding process manager for containers
 License: GPLv3+
@@ -52,6 +52,14 @@ install -p %{name} %{buildroot}%{_libexecdir}/%{name}
 %{_libexecdir}/%{name}/%{name}
 
 %changelog
+* Mon Dec 16 2024 Jindrich Novy <jnovy@redhat.com> - 3:0.2.1-1
+- update to https://github.com/openSUSE/catatonit/releases/tag/v0.2.1
+- Related: RHEL-60277
+
+* Mon Dec 09 2024 Jindrich Novy <jnovy@redhat.com> - 3:0.2.0-2
+- add rpminspect.yaml
+- Resolves: RHEL-70588
+
 * Wed Oct 04 2023 Jindrich Novy <jnovy@redhat.com> - 3:0.2.0-1
 - update to https://github.com/openSUSE/catatonit/releases/tag/v0.2.0
 - Related: Jira:RHEL-2112
