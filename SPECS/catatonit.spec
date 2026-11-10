@@ -2,7 +2,7 @@ Name: catatonit
 Version: 0.2.1
 Summary: A signal-forwarding process manager for containers
 License: GPL-3.0-or-later
-Release: 1%{?dist}
+Release: 4%{?dist}
 # Bump epoch to 5 for RHEL
 # Ref: https://bugzilla.redhat.com/show_bug.cgi?id=2257446
 Epoch: 5
@@ -41,12 +41,18 @@ sed -i '/^AM_INIT_AUTOMAKE$/d' configure.ac
 %build
 autoreconf -fi
 %configure
-CFLAGS="%{optflags} -fPIE -D_GNU_SOURCE -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE"
+%ifarch x86_64 aarch64
+%{__make} %{?_smp_mflags} \
+  CFLAGS="%{optflags} -fPIE -D_GNU_SOURCE -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE" \
+  LDFLAGS="%{build_ldflags} -static-pie" \
+  catatonit_LDFLAGS=
+%else
 %{__make} %{?_smp_mflags}
+%endif
 
 # Make sure we *always* build a static binary. Otherwise we'll break containers
 # that don't have the necessary shared libs.
-file ./%{name} | grep 'statically linked'
+file ./%{name} | grep -E 'statically linked|static-pie linked'
 if [ $? != 0 ]; then
    echo "ERROR: %{name} binary must be statically linked!"
    exit 1
@@ -67,6 +73,20 @@ ln -s %{_libexecdir}/%{name}/%{name} %{buildroot}%{_libexecdir}/podman/%{name}
 %{_libexecdir}/podman/%{name}
 
 %changelog
+* Tue Mar 03 2026 Jindrich Novy <jnovy@redhat.com> - 5:0.2.1-4
+- remove conflicting -all-static when building with -static-pie
+- Resolves: RHEL-152948
+
+* Fri Feb 27 2026 Jindrich Novy <jnovy@redhat.com> - 5:0.2.1-3
+- skip annocheck false positives for a static binary
+- Related: RHEL-152096
+
+* Thu Feb 26 2026 Jindrich Novy <jnovy@redhat.com> - 5:0.2.1-2
+- use -static-pie on x86_64/aarch64, fall back to -static on ppc64le/s390x
+  where rcrt1.o is not available
+- pass CFLAGS on make command line to override autotools Makefile variables
+- Resolves: RHEL-152096
+
 * Mon Dec 16 2024 Jindrich Novy <jnovy@redhat.com> - 5:0.2.1-1
 - update to https://github.com/openSUSE/catatonit/releases/tag/v0.2.1
 - Related: RHEL-58990
